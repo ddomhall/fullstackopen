@@ -7,7 +7,7 @@ sequenceDiagram
     activate server
     Note left of server: server stores note
     server-->>browser: redirect to /notes
-    deactivate server:
+    deactivate server
     browser->>server: GET /notes
     activate server
     server-->>browser: notes page
