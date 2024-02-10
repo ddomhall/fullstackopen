@@ -54,7 +54,9 @@ const App = () => {
     }
 
     function handleDelete(id) {
-        personService.deletePerson(id).then( res => {
+        if (window.confirm('are you sure')) {
+
+            personService.deletePerson(id).then( res => {
                 setErrorMessage(
                     `dome`
                 )
@@ -62,13 +64,14 @@ const App = () => {
                     setErrorMessage(null)
                 }, 3000)
             }).catch(err => {
-                console.log(err)
-                setErrorMessage(err.message)
-                setTimeout(() => {
-                    setErrorMessage(null)
-                }, 3000)
-            })
-        setPersons(persons.filter(p => p.id !== id))
+                    console.log(err)
+                    setErrorMessage(err.message)
+                    setTimeout(() => {
+                        setErrorMessage(null)
+                    }, 3000)
+                })
+            setPersons(persons.filter(p => p.id !== id))
+        }
     }
 
     function filterList(e) {
