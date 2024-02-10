@@ -24,7 +24,9 @@ const App = () => {
         if (persons.filter(p => p.name == newName).length) {
             alert(newName + ' already added')
         } else {
-            setPersons(persons.concat({name: newName, number: newNumber}))
+            axios
+                .post('http://localhost:3001/persons', {name: newName, number: newNumber, id: persons.length + 1})
+                .then(res => setPersons(persons.concat(res.data)))
         }
     }
 
@@ -36,7 +38,7 @@ const App = () => {
         <div>
             <h2>Phonebook</h2>
             <h2>add person</h2>
-            <Filter addName={addName} newName={newName} changeName={changeName} newNumber={newNumber} changeNumber={changeNumber} />
+            <PersonForm addName={addName} newName={newName} changeName={changeName} newNumber={newNumber} changeNumber={changeNumber} />
             <h2>Numbers</h2>
             <Filter filter={filter} filterList={filterList} />
             {persons.filter(p => p.name.toLowerCase().includes(filter.toLowerCase())).map(p => <Person key={p.id} person={p} />)}
