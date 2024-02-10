@@ -31,9 +31,13 @@ function Header({course}) {
 function Content({parts}) {
     return (
         <div>
-            {parts.map(p => <p>{p.name}: {p.exercises}</p>)}
+            {parts.map(p => <Part part={p}/>)}
         </div>
     )
+}
+
+function Part({part}) {
+    return <p>{part.name}: {part.exercises}</p>
 }
 
 function Footer({parts}) {
