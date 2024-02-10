@@ -15,6 +15,9 @@ export default function App() {
             <p>good: {good}</p>
             <p>neutral: {neutral}</p>
             <p>bad: {bad}</p>
+            <p>average: {good + neutral + bad}</p>
+            <p>average: {(good + neutral + bad) / 3}</p>
+            <p>positive: {good / (good + neutral + bad)}</p>
         </>
     )
 }
