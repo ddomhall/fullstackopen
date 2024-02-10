@@ -11,7 +11,6 @@ function App() {
             fetch('https://studies.cs.helsinki.fi/restcountries/api/all').then(res => res.json()).then(res => setCountries(res))
         }
         getCountries()
-        console.log(countries)
     }, [])
 
     useEffect(() => {
@@ -21,12 +20,20 @@ function App() {
     return (
         <>
             find countries <input value={filter} onChange={((e) => setFilter(e.target.value))} />
-            <Countries countries={filteredCountries}/>
+            <Countries countries={filteredCountries} setFilter={setFilter}/>
         </>
     )
 }
 
-function Countries({countries}) {
+function Countries({countries, setFilter}) {
+    const [weather, setWeather] = useState()
+
+    useEffect(() => {
+        if (countries.length == 1) {
+            fetch(`http://api.weatherapi.com/v1/current.json?key=${import.meta.env.VITE_SOME_KEY}&q=${countries[0].capital[0]}&aqi=no`).then(res => res.json()).then(res => console.log(res))
+        }
+    }, [countries])
+
     if (countries.length == 1) {
         const c = countries[0]
         return (
@@ -36,15 +43,21 @@ function Countries({countries}) {
                 <p>area: {c.area}</p>
                 <h2>languages</h2>
                 <ul>
-                    {Object.values(c.languages).map(l => <li>{l}</li>)}
+                    {Object.values(c.languages).map((l, i) => <li key={i}>{l}</li>)}
                 </ul>
+                {weather && !weather.error ? <p>{weather.current.temp_c} C</p> : ''}
             </>
         )
     } else if (countries.length <= 10) {
         return (
-        <>
-                {countries.map(c => <p>{c.name.common}</p>)}
-        </>
+            <>
+                {countries.map((c, i) => 
+                    <div key={i}>
+                        <p>{c.name.common}</p>
+                        <button onClick={() => setFilter(c.name.common)}>show</button>
+                    </div>
+                )}
+            </>
         )
     } else {
         return countries.length
