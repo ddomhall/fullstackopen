@@ -28,4 +28,8 @@ app.get('/api/persons', (req, res) => {
     res.json(persons)
 })
 
+app.get('/info', (req, res) => {
+    res.send(`phonebook has data for${persons.length} people<br/>${Date()}`)
+})
+
 app.listen(3001, console.log('listening on :3001'))
