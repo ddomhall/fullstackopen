@@ -35,21 +35,38 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
-            <input value={filter} onChange={filterList} />
-            <form onSubmit={addName}>
-                <div>
-                    name: <input value={newName} onChange={changeName}/>
-                </div>
-                <div>
-                    number: <input value={newNumber} onChange={changeNumber} type='number'/>
-                </div>
-                <div>
-                    <button type="submit">add</button>
-                </div>
-            </form>
+            <h2>add person</h2>
+            <Filter addName={addName} newName={newName} changeName={changeName} newNumber={newNumber} changeNumber={changeNumber} />
             <h2>Numbers</h2>
-            {persons.filter(p => p.name.toLowerCase().includes(filter.toLowerCase())).map((p, i) => <p key={i}>{p.name}: {p.number}</p>)}
+            <Filter filter={filter} filterList={filterList} />
+            {persons.filter(p => p.name.toLowerCase().includes(filter.toLowerCase())).map(p => <Person key={p.id} person={p} />)}
         </div>
+    )
+}
+
+const Filter = ({filter, filterList}) => {
+    return <input value={filter} onChange={filterList} />
+}
+
+const PersonForm = ({addName, newName, changeName, newNumber, changeNumber}) => {
+    return (
+        <form onSubmit={addName}>
+            <div>
+                name: <input value={newName} onChange={changeName}/>
+            </div>
+            <div>
+                number: <input value={newNumber} onChange={changeNumber} type='number'/>
+            </div>
+            <div>
+                <button type="submit">add</button>
+            </div>
+        </form>
+    )
+}
+
+const Person = ({person}) => {
+    return (
+        <p>{person.name}: {person.number}</p>
     )
 }
 
