@@ -1,14 +1,19 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
+import Filter from './components/Filter.jsx'
+import PersonForm from './components/PersonForm.jsx'
+import Person from './components/Person.jsx'
+import personService from './services/persons.js'
 
 const App = () => {
     const [persons, setPersons] = useState([]) 
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [filter, setFilter] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
 
     useEffect(() => {
-        axios.get('http://localhost:3001/persons').then(res => setPersons(res.data))
+        personService.getAll().then(res => setPersons(res.data))
     },[])
 
     function changeName(e) {
@@ -22,12 +27,48 @@ const App = () => {
     function addName(e) {
         e.preventDefault()
         if (persons.filter(p => p.name == newName).length) {
-            alert(newName + ' already added')
+            setErrorMessage('updating record')
+            const person = persons.find(p => p.name == newName)
+            setPersons(persons.map(p => p.id == person.id ? {...person, number: newNumber} : p))
+            personService.update(person.id, {...person, number: newNumber}).then( res => {
+                setErrorMessage(
+                    `dome`
+                )
+                setTimeout(() => {
+                    setErrorMessage(null)
+                }, 3000)
+            })
         } else {
-            axios
-                .post('http://localhost:3001/persons', {name: newName, number: newNumber, id: persons.length + 1})
+            personService.create({ id: persons.length + 1, name: newName, number: newNumber })
                 .then(res => setPersons(persons.concat(res.data)))
+                .then( res => {
+                    setErrorMessage(
+                        `dome`
+                    )
+                    setTimeout(() => {
+                        setErrorMessage(null)
+                    }, 3000)
+                })
+
         }
+    }
+
+    function handleDelete(id) {
+        personService.deletePerson(id).then( res => {
+                setErrorMessage(
+                    `dome`
+                )
+                setTimeout(() => {
+                    setErrorMessage(null)
+                }, 3000)
+            }).catch(err => {
+                console.log(err)
+                setErrorMessage(err.message)
+                setTimeout(() => {
+                    setErrorMessage(null)
+                }, 3000)
+            })
+        setPersons(persons.filter(p => p.id !== id))
     }
 
     function filterList(e) {
@@ -37,38 +78,13 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
+            <p className='error'>{errorMessage}</p>
             <h2>add person</h2>
             <PersonForm addName={addName} newName={newName} changeName={changeName} newNumber={newNumber} changeNumber={changeNumber} />
             <h2>Numbers</h2>
             <Filter filter={filter} filterList={filterList} />
-            {persons.filter(p => p.name.toLowerCase().includes(filter.toLowerCase())).map(p => <Person key={p.id} person={p} />)}
+            {Object.keys(persons).length ? persons.filter(p => p.name.toLowerCase().includes(filter.toLowerCase())).map(p => <Person key={p.id} person={p} handleDelete={handleDelete}/>) : ''}
         </div>
-    )
-}
-
-const Filter = ({filter, filterList}) => {
-    return <input value={filter} onChange={filterList} />
-}
-
-const PersonForm = ({addName, newName, changeName, newNumber, changeNumber}) => {
-    return (
-        <form onSubmit={addName}>
-            <div>
-                name: <input value={newName} onChange={changeName}/>
-            </div>
-            <div>
-                number: <input value={newNumber} onChange={changeNumber} type='number'/>
-            </div>
-            <div>
-                <button type="submit">add</button>
-            </div>
-        </form>
-    )
-}
-
-const Person = ({person}) => {
-    return (
-        <p>{person.name}: {person.number}</p>
     )
 }
 
