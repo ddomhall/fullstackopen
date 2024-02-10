@@ -24,12 +24,22 @@ const persons = [
     }
 ]
 
+app.get('/info', (req, res) => {
+    res.send(`phonebook has data for${persons.length} people<br/>${Date()}`)
+})
+
 app.get('/api/persons', (req, res) => {
     res.json(persons)
 })
 
-app.get('/info', (req, res) => {
-    res.send(`phonebook has data for${persons.length} people<br/>${Date()}`)
+app.get('/api/persons/:id', (req, res) => {
+    const person = persons.find(p => p.id == Number(req.params.id))
+    if (person) {
+        res.json(person)
+    } else {
+        res.status(404).end()
+    }
 })
+
 
 app.listen(3001, console.log('listening on :3001'))
