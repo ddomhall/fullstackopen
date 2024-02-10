@@ -24,20 +24,28 @@ function Button({text, onClick}) {
 function Statistics({good, neutral, bad}) {
     return (
         <>
+            <h1>Statistics</h1>
             {good == 0 && neutral == 0 && bad == 0 ? <p>no feedback given</p> :
-                <div>
+                <table>
+                    <tbody>
                     <StatisticLine text='good' value={good} />
                     <StatisticLine text='neutral' value={neutral} />
                     <StatisticLine text='bad' value={bad} />
                     <StatisticLine text='total' value={good + neutral + bad} />
                     <StatisticLine text='average' value={(good + neutral + bad) / 3} />
                     <StatisticLine text='positive' value={good / (good + neutral + bad)} />
-                </div>
+                    </tbody>
+                </table>
             }
         </>
     )
 }
 
 function StatisticLine({text, value}) {
-    return <p>{text}: {value}</p>
+    return (
+        <tr>
+            <th>{text}</th>
+            <td>{value}</td>
+        </tr>
+    )
 }
