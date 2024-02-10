@@ -20,12 +20,16 @@ export default function App() {
 function Statistics({good, neutral, bad}) {
     return (
         <>
-            <p>good: {good}</p>
-            <p>neutral: {neutral}</p>
-            <p>bad: {bad}</p>
-            <p>average: {good + neutral + bad}</p>
-            <p>average: {(good + neutral + bad) / 3}</p>
-            <p>positive: {good / (good + neutral + bad)}</p>
+            {good == 0 && neutral == 0 && bad == 0 ? <p>no feedback given</p> :
+                <div>
+                    <p>good: {good}</p>
+                    <p>neutral: {neutral}</p>
+                    <p>bad: {bad}</p>
+                    <p>total: {good + neutral + bad}</p>
+                    <p>average: {(good + neutral + bad) / 3}</p>
+                    <p>positive: {good / (good + neutral + bad)}</p>
+                </div>
+            }
         </>
     )
 }
