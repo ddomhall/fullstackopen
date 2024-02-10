@@ -12,6 +12,14 @@ export default function App() {
             <button onClick={() => setGood(good + 1)}>good</button>
             <button onClick={() => setNeutral(neutral + 1)}>neutral</button>
             <button onClick={() => setBad(bad + 1)}>bad</button>
+            <Statistics good={good} neutral={neutral} bad={bad}/>
+        </>
+    )
+}
+
+function Statistics({good, neutral, bad}) {
+    return (
+        <>
             <p>good: {good}</p>
             <p>neutral: {neutral}</p>
             <p>bad: {bad}</p>
@@ -21,4 +29,3 @@ export default function App() {
         </>
     )
 }
-
