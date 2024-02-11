@@ -1,5 +1,6 @@
 const express = require('express')
 const morgan = require('morgan')
+const cors = require('cors')
 const app = express()
 app.use(express.json())
 
@@ -7,6 +8,7 @@ morgan.token('body', req => {
   return JSON.stringify(req.body)
 })
 
+app.use(cors())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 let persons = [
@@ -55,13 +57,13 @@ app.post('/api/persons', (req, res) => {
     } else if (persons.find(p => p.name == req.body.name)) {
         res.status(409).json({error: 'name must be unique'})
     } else {
-    persons = persons.concat({
-        id: Math.trunc(Math.random() * 1000),
-        name: req.body.name,
-        number: req.body.number,
-    })
-
-    res.status(201).end()
+        const newPerson = {
+            id: Math.trunc(Math.random() * 1000),
+            name: req.body.name,
+            number: req.body.number,
+        }
+        persons = persons.concat(newPerson)
+        res.status(201).json(newPerson)
     }
 })
 

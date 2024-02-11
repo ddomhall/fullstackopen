@@ -80,13 +80,14 @@ const App = () => {
 
     return (
         <div>
+            <button onClick={(() => console.log(persons))}>test</button>
             <h2>Phonebook</h2>
             <p className='error'>{errorMessage}</p>
             <h2>add person</h2>
             <PersonForm addName={addName} newName={newName} changeName={changeName} newNumber={newNumber} changeNumber={changeNumber} />
             <h2>Numbers</h2>
             <Filter filter={filter} filterList={filterList} />
-            {Object.keys(persons).length ? persons.filter(p => p.name.toLowerCase().includes(filter.toLowerCase())).map(p => <Person key={p.id} person={p} handleDelete={handleDelete}/>) : ''}
+            {persons.length ? persons.filter(p =>p.name.toLowerCase().includes(filter.toLowerCase())).map(p => <Person key={p.id} person={p} handleDelete={handleDelete}/>) : ''}
         </div>
     )
 }
