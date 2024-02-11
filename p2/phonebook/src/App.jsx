@@ -47,6 +47,10 @@ const App = () => {
                         setErrorMessage(null)
                     }, 3000)
                 })
+                .catch( err => {
+                    console.log(err)
+                    setErrorMessage(err.response.data.error)
+                })
 
         }
     }

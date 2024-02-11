@@ -1,4 +1,4 @@
 .error {
-    color: green;
-    font-style: italic;
+    color: red;
+    font-weight: 600;
 }

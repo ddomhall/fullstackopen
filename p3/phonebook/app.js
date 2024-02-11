@@ -29,7 +29,7 @@ app.get('/api/persons/:id', (req, res, next) => {
         .catch(err => next(err))
 })
 
-app.post('/api/persons', async (req, res) => {
+app.post('/api/persons', async (req, res, next) => {
     if (!req.body.name || !req.body.number) {
         next({message: 'missing info'})
     } else if (await Person.findOne({name: req.body.name})) {
@@ -39,12 +39,12 @@ app.post('/api/persons', async (req, res) => {
             name: req.body.name,
             number: req.body.number,
         })
-        newPerson.save().then(res.status(201).json(newPerson))
+        newPerson.save().then(result => res.status(201).json(newPerson)).catch(err => next(err))
     }
 })
 
 app.put('/api/persons/:id', (req, res) => {
-    Person.findByIdAndUpdate(req.params.id, {name: req.body.name, number: req.body.number}, {new: true}).then(result => res.json(result))
+    Person.findByIdAndUpdate(req.params.id, {name: req.body.name, number: req.body.number}, {new: true, runValidators: true, context: 'query'}).then(result => res.json(result))
 })
 
 app.delete('/api/persons/:id', (req, res) => {
@@ -56,8 +56,10 @@ const errorHandler = (error, request, response, next) => {
 
     if (error.name === 'CastError') {
         return response.status(400).send({ error: 'malformatted id' })
+    } else if (error.name === 'ValidationError') {
+        return response.status(400).json({ error: error.message })
     } else {
-        return response.status(404).end()
+        return response.status(404).json({ error: error.message })
     }
 }
 
