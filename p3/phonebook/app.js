@@ -1,6 +1,9 @@
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
+require('dotenv').config()
+const Person = require('./models/mongo.js')
+
 const app = express()
 app.use(express.json())
 app.use(express.static('dist'))
@@ -36,20 +39,15 @@ let persons = [
 ]
 
 app.get('/info', (req, res) => {
-    res.send(`phonebook has data for${persons.length} people<br/>${Date()}`)
+    Person.find().then(result => res.send(`phonebook has data for ${result.length} people<br/>${Date()}`))
 })
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons)
+    Person.find().then(result => res.json(result))
 })
 
 app.get('/api/persons/:id', (req, res) => {
-    const person = persons.find(p => p.id == Number(req.params.id))
-    if (person) {
-        res.json(person)
-    } else {
-        res.status(404).end()
-    }
+    Person.findOne({_id: req.params.id}).then(result => result ? res.json(result) : res.status(404).end())
 })
 
 app.post('/api/persons', (req, res) => {
