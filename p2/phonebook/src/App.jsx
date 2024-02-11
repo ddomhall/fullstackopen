@@ -78,7 +78,6 @@ const App = () => {
 
     return (
         <div>
-            <button onClick={(() => console.log(persons))}>test</button>
             <h2>Phonebook</h2>
             <p className='error'>{errorMessage}</p>
             <h2>add person</h2>
