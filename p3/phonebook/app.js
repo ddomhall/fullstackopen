@@ -46,20 +46,17 @@ app.get('/api/persons', (req, res) => {
     Person.find().then(result => res.json(result))
 })
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res, next) => {
     Person.findOne({_id: req.params.id})
         .then(result => result ? res.json(result) : res.status(404).end())
-        .catch(err => {
-            console.log(err)
-            res.status(400).send({ error: 'malformatted id' })
-        })
+        .catch(err => next(err))
 })
 
 app.post('/api/persons', async (req, res) => {
     if (!req.body.name || !req.body.number) {
-        res.status(400).json({error: 'missing info'})
+        next({message: 'missing info'})
     } else if (await Person.findOne({name: req.body.name})) {
-        res.status(409).json({error: 'name must be unique'})
+        next({message: 'name must be unique'})
     } else {
         const newPerson = new Person({
             name: req.body.name,
@@ -73,10 +70,16 @@ app.delete('/api/persons/:id', (req, res) => {
     Person.findOneAndDelete(req.params.id).then(result => res.status(204).end())
 })
 
-const unknownEndpoint = (request, response) => {
-    response.status(404).send({ error: 'unknown endpoint' })
+const errorHandler = (error, request, response, next) => {
+    console.error(error.message)
+
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
+    } else {
+        return response.status(404).end()
+    }
 }
 
-app.use(unknownEndpoint)
+app.use(errorHandler)
 
 app.listen(process.env.PORT || 3001, console.log(`listening on :${process.env.PORT || 3001}`))
