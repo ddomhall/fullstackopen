@@ -66,6 +66,10 @@ app.post('/api/persons', async (req, res) => {
     }
 })
 
+app.put('/api/persons/:id', (req, res) => {
+    Person.findByIdAndUpdate(req.params.id, {name: req.body.name, number: req.body.number}, {new: true}).then(result => res.json(result))
+})
+
 app.delete('/api/persons/:id', (req, res) => {
     Person.findOneAndDelete(req.params.id).then(result => res.status(204).end())
 })
