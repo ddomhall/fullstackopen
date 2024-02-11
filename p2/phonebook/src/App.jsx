@@ -38,8 +38,7 @@ const App = () => {
                 }, 3000)
             })
         } else {
-            personService.create({ id: persons.length + 1, name: newName, number: newNumber })
-                .then(res => setPersons(persons.concat(res.data)))
+            personService.create({ name: newName, number: newNumber })
                 .then( res => {
                     setErrorMessage(
                         `dome`
