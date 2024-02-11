@@ -78,4 +78,4 @@ const unknownEndpoint = (request, response) => {
 
 app.use(unknownEndpoint)
 
-app.listen(3001, console.log('listening on :3001'))
+app.listen(process.env.PORT, console.log(`listening on :${process.env.PORT}`))
