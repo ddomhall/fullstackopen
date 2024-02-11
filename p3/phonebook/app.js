@@ -47,7 +47,12 @@ app.get('/api/persons', (req, res) => {
 })
 
 app.get('/api/persons/:id', (req, res) => {
-    Person.findOne({_id: req.params.id}).then(result => result ? res.json(result) : res.status(404).end())
+    Person.findOne({_id: req.params.id})
+        .then(result => result ? res.json(result) : res.status(404).end())
+        .catch(err => {
+            console.log(err)
+            res.status(400).send({ error: 'malformatted id' })
+        })
 })
 
 app.post('/api/persons', async (req, res) => {
@@ -65,8 +70,7 @@ app.post('/api/persons', async (req, res) => {
 })
 
 app.delete('/api/persons/:id', (req, res) => {
-    persons = persons.filter(p => p.id != Number(req.params.id))
-    res.status(204).end()
+    Person.findOneAndDelete(req.params.id).then(result => res.status(204).end())
 })
 
 const unknownEndpoint = (request, response) => {
