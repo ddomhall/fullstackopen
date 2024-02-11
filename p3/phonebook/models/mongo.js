@@ -18,8 +18,14 @@ module.exports = mongoose.model('Person', new mongoose.Schema({
         required: true
     },
     number: {
-        type: Number,
-        required: true
+        type: String,
+        minLength: 8,
+        required: true,
+        validate: {
+            validator: function(v) {
+                return /^\d{2,3}-\d*$/.test(v)
+            }
+        }
     }
 }).set('toJSON', {
         transform: (document, returnedObject) => {

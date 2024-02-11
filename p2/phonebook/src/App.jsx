@@ -40,6 +40,7 @@ const App = () => {
         } else {
             personService.create({ name: newName, number: newNumber })
                 .then( res => {
+                    setPersons(persons.concat(res.data))
                     setErrorMessage(
                         `dome`
                     )
