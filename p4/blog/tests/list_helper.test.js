@@ -140,7 +140,29 @@ describe('most blogs', () => {
 
     test('six blogs', () => {
         expect(listHelper.mostBlogs(listWithSixBlogs)).toEqual({
-            author: 'Robert C. Martin', blogs: 3 
+            author: 'Robert C. Martin',
+            blogs: 3 
         })
     })
 })
+
+describe('most likes', () => {
+    test('no blogs', () => {
+        expect(listHelper.mostLikes(listWithNoBlogs)).toEqual(null)
+    })
+
+    test('one blog', () => {
+        expect(listHelper.mostLikes(listWithOneBlog)).toEqual({
+            author: 'Edsger W. Dijkstra',
+            likes: 5 
+        })
+    })
+
+    test('six blogs', () => {
+        expect(listHelper.mostLikes(listWithSixBlogs)).toEqual({
+            author: 'Edsger W. Dijkstra',
+            likes: 17 
+        })
+    })
+})
+
