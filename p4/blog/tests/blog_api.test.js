@@ -14,6 +14,14 @@ const BlogToBeAdded = {
     __v: 0
 }
 
+const BlogWithoutLikes = {
+    _id: "5a422b3a1b54a676234d17f9",
+    title: "Canonical string reduction",
+    author: "Edsger W. Dijkstra",
+    url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+    __v: 0
+}
+
 const listWithTwoBlogs = [
     {
         _id: "5a422a851b54a676234d17f7",
@@ -58,4 +66,11 @@ test('post successfully', async () => {
 
     expect(response.body.length).toBe(3)
     expect(response.body[response.body.length - 1].title).toEqual("Canonical string reduction")
+})
+
+test('fills missing likes with 0', async () => {
+    await api.post('/api/blogs').send(BlogWithoutLikes)
+    const response = await api.get('/api/blogs')
+
+    expect(response.body[response.body.length - 1].likes).toBe(0)
 })
