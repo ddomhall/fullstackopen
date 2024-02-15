@@ -3,14 +3,14 @@ const listHelper = require('../utils/list_helper')
 const listWithNoBlogs = []
 
 const listWithOneBlog = [
-    {
-        _id: '5a422aa71b54a676234d17f8',
-        title: 'Go To Statement Considered Harmful',
-        author: 'Edsger W. Dijkstra',
-        url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
-        likes: 5,
-        __v: 0
-    }
+  {
+    _id: "5a422b3a1b54a676234d17f9",
+    title: "Canonical string reduction",
+    author: "Edsger W. Dijkstra",
+    url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+    likes: 12,
+    __v: 0
+  }
 ]
 
 const listWithTwoBlogs = [
@@ -96,7 +96,7 @@ describe('total likes', () => {
     })
 
     test('one blog', () => {
-        expect(listHelper.totalLikes(listWithOneBlog)).toBe(5)
+        expect(listHelper.totalLikes(listWithOneBlog)).toBe(12)
     })
 
     test('two blogs', () => {
@@ -111,9 +111,9 @@ describe('favourite blog', () => {
 
     test('one blog', () => {
         expect(listHelper.favouriteBlog(listWithOneBlog)).toEqual({
-            title: 'Go To Statement Considered Harmful',
-            author: 'Edsger W. Dijkstra',
-            likes: 5,
+            title: "Canonical string reduction",
+            author: "Edsger W. Dijkstra",
+            likes: 12,
         })
     })
 
@@ -133,7 +133,7 @@ describe('most blogs', () => {
 
     test('one blog', () => {
         expect(listHelper.mostBlogs(listWithOneBlog)).toEqual({
-            author: 'Edsger W. Dijkstra',
+            author: "Edsger W. Dijkstra",
             blogs: 1
         })
     })
@@ -154,7 +154,7 @@ describe('most likes', () => {
     test('one blog', () => {
         expect(listHelper.mostLikes(listWithOneBlog)).toEqual({
             author: 'Edsger W. Dijkstra',
-            likes: 5 
+            likes: 12
         })
     })
 

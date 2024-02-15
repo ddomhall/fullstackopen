@@ -5,6 +5,15 @@ const Blog = require('../models/blog')
 
 const api = supertest(app)
 
+const BlogToBeAdded = {
+    _id: "5a422b3a1b54a676234d17f9",
+    title: "Canonical string reduction",
+    author: "Edsger W. Dijkstra",
+    url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+    likes: 12,
+    __v: 0
+}
+
 const listWithTwoBlogs = [
     {
         _id: "5a422a851b54a676234d17f7",
@@ -35,7 +44,7 @@ afterAll(async () => {
 
 test('correct number of blogs returned', async () => {
     const response = await api.get('/api/blogs')
-    expect(response.body.length).toEqual(2)
+    expect(response.body.length).toBe(2)
 })
 
 test('unique identifier is id', async () => {
@@ -43,3 +52,10 @@ test('unique identifier is id', async () => {
     expect(response.body[0].id).toBeDefined()
 })
 
+test('post successfully', async () => {
+    await api.post('/api/blogs').send(BlogToBeAdded)
+    const response = await api.get('/api/blogs')
+
+    expect(response.body.length).toBe(3)
+    expect(response.body[response.body.length - 1].title).toEqual("Canonical string reduction")
+})
