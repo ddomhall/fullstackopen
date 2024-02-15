@@ -26,7 +26,11 @@ const listWithTwoBlogs = [
 
 beforeEach(async () => {
     await Blog.deleteMany({})
-    await Promise.all(listWithTwoBlogs.map(b => new Blog(b).save()))
+    await Blog.insertMany(listWithTwoBlogs)
+})
+
+afterAll(async () => {
+    await mongoose.connection.close()
 })
 
 test('correct number of blogs returned', async () => {
@@ -34,6 +38,8 @@ test('correct number of blogs returned', async () => {
     expect(response.body.length).toEqual(2)
 })
 
-afterEach(async () => {
-    await mongoose.connection.close()
+test('unique identifier is id', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.body[0].id).toBeDefined()
 })
+
