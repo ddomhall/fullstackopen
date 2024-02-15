@@ -93,3 +93,10 @@ test('deletes blog post', async () => {
 
     expect(response.body.length).toBe(1)
 })
+
+test('updates blog post', async () => {
+    await api.put('/api/blogs/5a422a851b54a676234d17f7').send({likes: 0}).expect(204)
+    const response = await api.get('/api/blogs')
+
+    expect(response.body[0].likes).toBe(0)
+})
