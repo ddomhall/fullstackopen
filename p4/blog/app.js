@@ -1,9 +1,9 @@
-const {MONGODB_URI, PORT} = require('./utils/config')
+const {MONGODB_URI} = require('./utils/config')
 const express = require('express')
 const app = express()
 const cors = require('cors')
 const blogsRouter = require('./controllers/blogs')
-const {info, error} = require('./utils/logger')
+const {info} = require('./utils/logger')
 const mongoose = require('mongoose')
 
 mongoose.set('strictQuery', false)
