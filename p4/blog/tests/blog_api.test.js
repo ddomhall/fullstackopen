@@ -86,3 +86,10 @@ test('fills missing likes with 0', async () => {
 test('missing title returns 400', async () => {
     await api.post('/api/blogs').send(BlogWithoutTitle).expect(400)
 })
+
+test('deletes blog post', async () => {
+    await api.delete('/api/blogs/5a422a851b54a676234d17f7').expect(204)
+    const response = await api.get('/api/blogs')
+
+    expect(response.body.length).toBe(1)
+})
