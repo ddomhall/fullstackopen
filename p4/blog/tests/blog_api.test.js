@@ -22,6 +22,14 @@ const BlogWithoutLikes = {
     __v: 0
 }
 
+const BlogWithoutTitle = {
+    _id: "5a422b3a1b54a676234d17f9",
+    author: "Edsger W. Dijkstra",
+    url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+    likes: 12,
+    __v: 0
+}
+
 const listWithTwoBlogs = [
     {
         _id: "5a422a851b54a676234d17f7",
@@ -73,4 +81,8 @@ test('fills missing likes with 0', async () => {
     const response = await api.get('/api/blogs')
 
     expect(response.body[response.body.length - 1].likes).toBe(0)
+})
+
+test('missing title returns 400', async () => {
+    await api.post('/api/blogs').send(BlogWithoutTitle).expect(400)
 })

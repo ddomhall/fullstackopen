@@ -6,7 +6,11 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-    res.json(await new Blog(req.body).save())
+    if (!req.body.title) {
+        res.status(400).end()
+    } else {
+        res.json(await new Blog(req.body).save())
+    }
 })
 
 module.exports = router
