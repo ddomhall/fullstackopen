@@ -8,7 +8,11 @@ module.exports = mongoose.model('User', new mongoose.Schema({
         minLength: 3,
         unique: true
     },
-    passwordHash: String
+    passwordHash: String,
+    blogs: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Blog'
+    }
 }).set('toJSON', {
         transform: (document, returnedObject) => {
             returnedObject.id = returnedObject._id.toString()
