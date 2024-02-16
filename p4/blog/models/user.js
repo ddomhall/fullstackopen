@@ -1,9 +1,14 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
 module.exports = mongoose.model('User', new mongoose.Schema({
     name: String,
-    username: String,
-    passwordHash: String,
+    username: { 
+        type: String,
+        minLength: 3,
+        unique: true
+    },
+    passwordHash: String
 }).set('toJSON', {
         transform: (document, returnedObject) => {
             returnedObject.id = returnedObject._id.toString()

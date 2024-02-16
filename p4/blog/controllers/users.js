@@ -7,12 +7,15 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-    console.log(req.body)
-    res.json(await new User({
-        name: req.body.name,
-        username: req.body.username,
-        passwordHash: await bcrypt.hash(req.body.password, 10)
-    }).save())
+    if (req.body.password.length < 3) {
+        res.status(400).send('password must be at least 3 characters\n')
+    } else {
+        res.json(await new User({
+            name: req.body.name,
+            username: req.body.username,
+            passwordHash: await bcrypt.hash(req.body.password, 10)
+        }).save())
+    }
 })
 
 router.delete('/:id', async (req, res) => {
