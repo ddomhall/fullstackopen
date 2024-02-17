@@ -30,8 +30,14 @@ router.post('/', async (req, res) => {
 })
 
 router.delete('/:id', async (req, res) => {
-    await Blog.findByIdAndDelete(req.params.id)
-    res.status(204).end()
+    const blog = await Blog.findById(req.params.id).populate('user')
+    const decodedToken = jwt.verify(req.token, process.env.SECRET)
+    if (decodedToken.id == blog.user._id) {
+        await Blog.findByIdAndDelete(req.params.id)
+        res.status(204).end()
+    } else {
+        res.status(401).end()
+    }
 })
 
 router.put('/:id', async (req, res) => {
