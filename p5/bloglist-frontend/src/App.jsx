@@ -26,10 +26,23 @@ const App = () => {
     }, [errorMessage])
 
     function addBlog(data) {
-        blogService.create(data, user.token).then(res => {
+        blogService.create(data, user).then(res => {
             setBlogs(blogs)
             setErrorMessage(`${res.title} by ${res.author} added`)
         }).catch(err => setErrorMessage(err.response.data.error))
+    }
+
+    function likeBlog(id) {
+        const blog = blogs.find(b => b.id == id)
+        blogService.update(id, {...blog, likes: blog.likes + 1}, user)
+        setBlogs(blogs)
+    }
+
+    function removeBlog(id) {
+        if (window.confirm('are you sure?')) {
+            blogService.remove(id, user)
+            setBlogs(blogs)
+        }
     }
 
     function logIn(data) {
@@ -51,8 +64,8 @@ const App = () => {
                 <>
                     <h2>blogs</h2>
                     <Form errorMessage={errorMessage} formAction={addBlog} fields={['title', 'author']} title={'add blog'} />
-                    {blogs.map(blog =>
-                        <Blog key={blog.id} blog={blog} />
+                    {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
+                        <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog} user={user}/>
                     )}
                     <button onClick={logOut}>log out</button>
                 </> : <>
