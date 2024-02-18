@@ -7,6 +7,8 @@ const App = () => {
     const [blogs, setBlogs] = useState([])
     const [user, setUser] = useState()
     const [errorMessage, setErrorMessage] = useState()
+    const [showLoginForm, setShowLoginForm] = useState()
+    const [showBlogForm, setShowBlogForm] = useState()
 
     useEffect(() => {
         blogService.getAll().then(blogs =>
@@ -46,7 +48,12 @@ const App = () => {
             setTimeout(() => {
                 setErrorMessage()
             }, 3000)
-        })
+        }).catch(err => {
+                setErrorMessage(err.response.data.error)
+                setTimeout(() => {
+                    setErrorMessage()
+                }, 3000)
+            })
     }
 
     return (
@@ -54,24 +61,34 @@ const App = () => {
             {user ? 
                 <>
                     <h2>blogs</h2>
-                    <p>{errorMessage}</p>
-                    <form onSubmit={addBlog}>
-                        <input name='title' placeholder='title' />
-                        <input name='author' placeholder='author' />
-                        <input type='submit' value='add blog' />
-                    </form>
+                    {showBlogForm ? 
+                        <>
+                            <button onClick={() => setShowBlogForm(false)}>cancel</button>
+                            <div>{errorMessage}</div>
+                            <form onSubmit={addBlog}>
+                                <input name='title' placeholder='title' />
+                                <input name='author' placeholder='author' />
+                                <input type='submit' value='add blog' />
+                            </form>
+                        </>
+                        : <button onClick={() => setShowBlogForm(true)}>add blog</button>}
                     {blogs.map(blog =>
                         <Blog key={blog.id} blog={blog} />
                     )}
                     <button onClick={logOut}>log out</button>
                 </> : <>
                     <h2>log in</h2>
-                    <p>{errorMessage}</p>
-                    <form onSubmit={logIn}>
-                        <input name='username' placeholder='username' />
-                        <input name='password' placeholder='password' />
-                        <input type='submit' value='log in' />
-                    </form>
+                    {showLoginForm ? 
+                        <>
+                            <button onClick={() => setShowLoginForm(false)}>cancel</button>
+                            <div>{errorMessage}</div>
+                            <form onSubmit={logIn}>
+                                <input name='username' placeholder='username' />
+                                <input name='password' placeholder='password' />
+                                <input type='submit' value='log in' />
+                            </form>
+                        </>
+                        : <button onClick={() => setShowLoginForm(true)}>log in</button>}
                 </>}
         </>
     )
