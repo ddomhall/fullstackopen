@@ -6,6 +6,7 @@ import loginService from './services/login'
 const App = () => {
     const [blogs, setBlogs] = useState([])
     const [user, setUser] = useState()
+    const [errorMessage, setErrorMessage] = useState()
 
     useEffect(() => {
         blogService.getAll().then(blogs =>
@@ -19,7 +20,12 @@ const App = () => {
         loginService.login({username: e.target.username.value, password: e.target.password.value}).then(res => {
             setUser(res)
             localStorage.setItem('user', JSON.stringify(res))
-        })
+        }).catch(err => {
+                setErrorMessage(err.response.data.error)
+                setTimeout(() => {
+                    setErrorMessage()
+                }, 3000)
+            })
         e.target.reset()
     }
 
@@ -34,7 +40,13 @@ const App = () => {
             title: e.target.title.value,
             author: e.target.author.value
         }
-        blogService.create(newBlog, user.token)
+        blogService.create(newBlog, user.token).then(res => {
+            setBlogs(blogs.concat(newBlog))
+            setErrorMessage(`${res.title} by ${res.author} added`)
+            setTimeout(() => {
+                setErrorMessage()
+            }, 3000)
+        })
     }
 
     return (
@@ -42,6 +54,7 @@ const App = () => {
             {user ? 
                 <>
                     <h2>blogs</h2>
+                    <p>{errorMessage}</p>
                     <form onSubmit={addBlog}>
                         <input name='title' placeholder='title' />
                         <input name='author' placeholder='author' />
@@ -53,6 +66,7 @@ const App = () => {
                     <button onClick={logOut}>log out</button>
                 </> : <>
                     <h2>log in</h2>
+                    <p>{errorMessage}</p>
                     <form onSubmit={logIn}>
                         <input name='username' placeholder='username' />
                         <input name='password' placeholder='password' />
