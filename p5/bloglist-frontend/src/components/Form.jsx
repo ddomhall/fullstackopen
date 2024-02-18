@@ -1,6 +1,6 @@
-import {useState} from 'react'
+import { useState } from 'react'
 
-const Form = ({errorMessage, formAction, fields, title}) => {
+const Form = ({ errorMessage, formAction, fields, title }) => {
     const [showForm, setShowForm] = useState()
 
     function handleSubmit(e) {
@@ -13,7 +13,7 @@ const Form = ({errorMessage, formAction, fields, title}) => {
 
     return (
         <>
-            {showForm ? 
+            {showForm ?
                 <>
                     <button onClick={() => setShowForm(false)}>cancel</button>
                     <div>{errorMessage}</div>

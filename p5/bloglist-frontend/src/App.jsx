@@ -14,10 +14,8 @@ const App = () => {
     }, [])
 
     useEffect(() => {
-        blogService.getAll().then(blogs =>
-            setBlogs( blogs )
-        )  
-    }, [blogs])
+        getBlogs()
+    }, [])
 
     useEffect(() => {
         setTimeout(() => {
@@ -25,23 +23,29 @@ const App = () => {
         }, 2500)
     }, [errorMessage])
 
+    function getBlogs() {
+        blogService.getAll().then(blogs =>
+            setBlogs( blogs )
+        )
+    }
+
     function addBlog(data) {
         blogService.create(data, user).then(res => {
-            setBlogs(blogs)
+            getBlogs(blogs)
             setErrorMessage(`${res.title} by ${res.author} added`)
         }).catch(err => setErrorMessage(err.response.data.error))
     }
 
     function likeBlog(id) {
-        const blog = blogs.find(b => b.id == id)
-        blogService.update(id, {...blog, likes: blog.likes + 1}, user)
-        setBlogs(blogs)
+        const blog = blogs.find(b => b.id === id)
+        blogService.update(id, { ...blog, likes: blog.likes + 1 }, user)
+        getBlogs(blogs)
     }
 
     function removeBlog(id) {
         if (window.confirm('are you sure?')) {
             blogService.remove(id, user)
-            setBlogs(blogs)
+            getBlogs(blogs)
         }
     }
 
@@ -60,7 +64,7 @@ const App = () => {
 
     return (
         <>
-            {user ? 
+            {user ?
                 <>
                     <h2>blogs</h2>
                     <Form errorMessage={errorMessage} formAction={addBlog} fields={['title', 'author']} title={'add blog'} />
