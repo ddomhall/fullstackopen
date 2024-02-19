@@ -18,7 +18,7 @@ const Form = ({ errorMessage, formAction, fields, title }) => {
                     <button onClick={() => setShowForm(false)}>cancel</button>
                     <div>{errorMessage}</div>
                     <form onSubmit={handleSubmit}>
-                        {fields.map(f => <input name={f} placeholder={f} key={f} />)}
+                        {fields.map(f => <input name={f} placeholder={f} key={f} type={f === 'password' && 'password'} />)}
                         <input type='submit' value={title}/>
                     </form>
                 </>
