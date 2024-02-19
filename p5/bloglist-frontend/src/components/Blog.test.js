@@ -40,3 +40,24 @@ test('likes show on expand', async () => {
 
     likes = screen.getByText('likes:', {exact: false})
 })
+
+test('likes click twice', async () => {
+    const blog = {
+        title: 'title1',
+        author: 'author1',
+        likes: 1,
+        user: {
+            name: 'name1'
+        }
+    }
+    const mockHandler = jest.fn()
+
+    render(<Blog blog={blog} likeBlog={mockHandler} removeBlog={jest.fn()} />)
+
+    const button = screen.getByText('like')
+    const user = userEvent.setup()
+    await user.click(button)
+    await user.click(button)
+
+    expect(mockHandler.mock.calls).toHaveLength(2)
+})
