@@ -16,7 +16,7 @@ const Blog = ({ blog, likeBlog, removeBlog, user }) => {
                 </>
                 : <button onClick={() => setExpanded(true)}>expand</button>}
             <button onClick={() => likeBlog(blog.id)}>like</button>
-            {blog.user.username === user.username && <button onClick={() => removeBlog(blog.id)}>remove</button>}
+            {user && blog.user.username === user.username && <button onClick={() => removeBlog(blog.id)}>remove</button>}
         </div>
     )}
 
