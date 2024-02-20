@@ -15,14 +15,14 @@ const Form = ({ errorMessage, formAction, fields, title }) => {
         <>
             {showForm ?
                 <>
-                    <button onClick={() => setShowForm(false)}>cancel</button>
+                    <button onClick={() => setShowForm(false)}>hide</button>
                     <div>{errorMessage}</div>
                     <form onSubmit={handleSubmit}>
-                        {fields.map(f => <input name={f} placeholder={f} key={f} type={f === 'password' && 'password'} />)}
+                        {fields.map(f => <input name={f} placeholder={f} key={f} type={f === 'password' ? 'password' : undefined} />)}
                         <input type='submit' value={title}/>
                     </form>
                 </>
-                : <button onClick={() => setShowForm(true)}>{title}</button>}
+                : <button onClick={() => setShowForm(true)}>show</button>}
         </>
     )
 }
