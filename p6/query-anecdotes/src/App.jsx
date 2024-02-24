@@ -6,9 +6,10 @@ import {getAnecdotes} from './requests'
 const App = () => {
 
     const result = useQuery({
-        queryKey: ['notes'],
+        queryKey: ['anecdotes'],
         queryFn: getAnecdotes,
-        retry: false
+        retry: false,
+        refetchOnWindowFocus: false
     })
     console.log(JSON.parse(JSON.stringify(result)))
 
