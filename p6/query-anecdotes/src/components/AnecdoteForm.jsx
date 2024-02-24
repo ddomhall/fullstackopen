@@ -13,7 +13,11 @@ const AnecdoteForm = () => {
             queryClient.invalidateQueries({ queryKey: ['anecdotes']})
             notificationDispatch({type: 'SET', payload: 'anecdote created'})
             setTimeout(() => notificationDispatch({type: 'CLEAR'}), 10000)
-        }
+        },
+        onError: () => {
+            notificationDispatch({type: 'SET', payload: 'error'})
+            setTimeout(() => notificationDispatch({type: 'CLEAR'}), 10000)
+        },
     })
 
     const onCreate = (e) => {

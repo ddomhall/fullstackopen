@@ -24,7 +24,7 @@ const App = () => {
         retry: false,
         refetchOnWindowFocus: false
     })
-    console.log(JSON.parse(JSON.stringify(result)))
+    //console.log(JSON.parse(JSON.stringify(result)))
 
     if ( result.isLoading ) {
         return <div>loading data...</div>
