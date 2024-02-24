@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { createAnecdote } from '../reducers/anecdoteReducer'
-import {setNotification, removeNotification} from '../reducers/notificationReducer'
+import {flashNotification} from '../reducers/notificationReducer'
 
 const AnecdoteForm = () => {
     const dispatch = useDispatch()
@@ -9,8 +9,7 @@ const AnecdoteForm = () => {
         e.preventDefault()
         const content = e.target.anecdote.value
         dispatch(createAnecdote(content))
-        dispatch(setNotification(`you posted: ${content}`))
-        setTimeout(() => dispatch(removeNotification()), 5000)
+        dispatch(flashNotification(`you posted: ${content}`, 10))
         e.target.reset()
     }
 
