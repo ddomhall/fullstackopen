@@ -64,9 +64,9 @@ const App = () => {
 
     return (
         <>
-            <h2>blogs</h2>
             {user ?
                 <>
+                    <h2>blogs</h2>
                     <Form errorMessage={errorMessage} formAction={addBlog} fields={['title', 'author']} title={'add blog'} />
                     {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
                         <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog} user={user}/>
