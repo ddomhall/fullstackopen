@@ -71,7 +71,9 @@ const App = () => {
                     {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
                         <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog} user={user}/>
                     )}
-                    <button onClick={logOut}>log out</button>
+                    <div>
+                        <button onClick={logOut}>log out</button>
+                    </div>
                 </> : <>
                     <h2>log in</h2>
                     <Form errorMessage={errorMessage} formAction={logIn} fields={['username', 'password']} title={'log in'} />
