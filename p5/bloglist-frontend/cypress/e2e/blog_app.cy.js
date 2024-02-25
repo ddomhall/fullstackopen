@@ -4,10 +4,17 @@ const user = {
     password: 'dom'
 }
 
+const user2 = {
+    name: 'dom2',
+    username: 'dom2',
+    password: 'dom2'
+}
+
 describe('Blog app', function() {
     beforeEach(function() {
         cy.request('POST', 'http://localhost:3003/api/testing/reset')
         cy.request('POST', 'http://localhost:3003/api/users', user)
+        cy.request('POST', 'http://localhost:3003/api/users', user2)
         cy.visit('http://localhost:5173')
     })
 
@@ -58,11 +65,24 @@ describe('Blog app', function() {
             cy.contains('likes: 1')
         })
 
-        it.only('A blog can be deleted', function() {
+        it('creator can see remove button', function() {
             cy.get('input[placeholder="title"]').type(user.name)
             cy.get('input[placeholder="author"]').type(user.name)
             cy.get('input[value="add blog"]').click()
             cy.contains('remove')
+        })
+
+        it.only('rmove button only viisble to creator', function() {
+            cy.get('input[placeholder="title"]').type(user.name)
+            cy.get('input[placeholder="author"]').type(user.name)
+            cy.get('input[value="add blog"]').click()
+            cy.contains('log out').click()
+
+            cy.get('input[placeholder="username"]').type(user2.username)
+            cy.get('input[placeholder="password"]').type(user2.password)
+            cy.get('input[value="log in"]').click()
+
+            cy.contains('remove').should('not.exist')
         })
     })
 })
