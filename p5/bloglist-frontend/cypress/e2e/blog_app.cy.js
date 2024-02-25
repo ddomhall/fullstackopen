@@ -72,7 +72,7 @@ describe('Blog app', function() {
             cy.contains('remove')
         })
 
-        it.only('rmove button only viisble to creator', function() {
+        it('rmove button only viisble to creator', function() {
             cy.get('input[placeholder="title"]').type(user.name)
             cy.get('input[placeholder="author"]').type(user.name)
             cy.get('input[value="add blog"]').click()
@@ -83,6 +83,21 @@ describe('Blog app', function() {
             cy.get('input[value="log in"]').click()
 
             cy.contains('remove').should('not.exist')
+        })
+
+        it.only('rmove button only viisble to creator', function() {
+            cy.get('input[placeholder="title"]').type(user.name)
+            cy.get('input[placeholder="author"]').type(user.name)
+            cy.get('input[value="add blog"]').click()
+
+            cy.get('input[placeholder="title"]').type(user2.name)
+            cy.get('input[placeholder="author"]').type(user2.name)
+            cy.get('input[value="add blog"]').click()
+
+            cy.wait(1000)
+
+            cy.get('button:contains(like)').eq(1).click()
+            cy.contains('title').eq(0).should('contain', 'dom2')
         })
     })
 })
