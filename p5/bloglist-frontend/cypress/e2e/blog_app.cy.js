@@ -42,11 +42,20 @@ describe('Blog app', function() {
             cy.get('input[value="log in"]').click()
         })
 
-        it.only('A blog can be created', function() {
+        it('A blog can be created', function() {
             cy.get('input[placeholder="title"]').type(user.username)
             cy.get('input[placeholder="author"]').type(user.password)
             cy.get('input[value="add blog"]').click()
             cy.contains('title: dom')
+        })
+
+        it.only('A blog can be liked', function() {
+            cy.get('input[placeholder="title"]').type(user.username)
+            cy.get('input[placeholder="author"]').type(user.password)
+            cy.get('input[value="add blog"]').click()
+            cy.contains('like').click()
+            cy.contains('expand').click()
+            cy.contains('likes: 1')
         })
     })
 })
