@@ -61,7 +61,6 @@ const CreateNew = ({addNew, setNotification}) => {
             info: info.value,
             votes: 0
         }
-        console.log(object)
         addNew(object)
         setNotification(`${object.content} created`)
         setTimeout(() => setNotification(), 5000)
@@ -80,15 +79,15 @@ const CreateNew = ({addNew, setNotification}) => {
             <form onSubmit={handleSubmit}>
                 <div>
                     content
-                    <input {...content}/>
+                    <input {...content} reset={null}/>
                 </div>
                 <div>
                     author
-                    <input {...author}/>
+                    <input {...author} reset={null}/>
                 </div>
                 <div>
                     url for more info
-                    <input {...info}/>
+                    <input {...info} reset={null}/>
                 </div>
                 <button>create</button>
                 <button type='button' onClick={resetForm}>reset</button>
@@ -101,7 +100,6 @@ const CreateNew = ({addNew, setNotification}) => {
 const Anecdote = ({anecdotes}) => {
     const id = useParams().id
     const anecdote = anecdotes.find(a => a.id === Number(id))
-    console.log(anecdote)
     return (
     <>
             <p>{anecdote.content}</p>
