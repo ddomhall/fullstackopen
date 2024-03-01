@@ -1,13 +1,13 @@
-import { useState } from 'react'
+import { useState } from "react";
 
 const LoginForm = ({ onLogin }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = (event) => {
-    event.preventDefault()
-    onLogin(username, password)
-  }
+    event.preventDefault();
+    onLogin(username, password);
+  };
 
   return (
     <div>
@@ -19,7 +19,7 @@ const LoginForm = ({ onLogin }) => {
           <input
             value={username}
             onChange={({ target }) => setUsername(target.value)}
-            id='username'
+            id="username"
           />
         </div>
         <div>
@@ -36,7 +36,7 @@ const LoginForm = ({ onLogin }) => {
         </button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;
