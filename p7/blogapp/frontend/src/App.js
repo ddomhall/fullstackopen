@@ -15,6 +15,7 @@ import {
   likeBlog,
   removeBlog,
 } from "./reducers/blogReducer.js";
+import { setUser } from "./reducers/userReducer.js";
 
 import LoginForm from "./components/Login";
 import NewBlog from "./components/NewBlog";
@@ -22,27 +23,26 @@ import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 
 const App = () => {
-  const [user, setUser] = useState("");
+  const info = useSelector((store) => store.messages);
+  const blogs = useSelector((store) => store.blogs);
+  const user = useSelector((store) => store.user);
 
-  const blogFormRef = useRef();
   const dispatch = useDispatch();
+  const blogFormRef = useRef();
 
   useEffect(() => {
     const user = storageService.loadUser();
-    setUser(user);
+    dispatch(setUser(user));
   }, []);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => dispatch(setBlogs(blogs)));
   }, []);
 
-  const info = useSelector((store) => store.messages);
-  const blogs = useSelector((store) => store.blogs);
-
   const login = async (username, password) => {
     try {
       const user = await loginService.login({ username, password });
-      setUser(user);
+      dispatch(setUser(user));
       storageService.saveUser(user);
       dispatch(createInfo("welcome!"));
       setTimeout(() => {
@@ -57,7 +57,7 @@ const App = () => {
   };
 
   const logout = async () => {
-    setUser(null);
+    dispatch(setUser(null));
     storageService.removeUser();
     dispatch(createInfo("logged out"));
     setTimeout(() => {
