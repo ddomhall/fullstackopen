@@ -9,7 +9,12 @@ import {
   createError,
   removeMessage,
 } from "./reducers/messageReducer.js";
-import { setBlogs, appendBlog } from "./reducers/blogReducer.js";
+import {
+  setBlogs,
+  appendBlog,
+  likeBlog,
+  removeBlog,
+} from "./reducers/blogReducer.js";
 
 import LoginForm from "./components/Login";
 import NewBlog from "./components/NewBlog";
@@ -85,7 +90,7 @@ const App = () => {
     setTimeout(() => {
       dispatch(removeMessage());
     }, 3000);
-    setBlogs(blogs.map((b) => (b.id === blog.id ? updatedBlog : b)));
+    dispatch(likeBlog(updatedBlog));
   };
 
   const remove = async (blog) => {
@@ -100,7 +105,7 @@ const App = () => {
       setTimeout(() => {
         dispatch(removeMessage());
       }, 3000);
-      setBlogs(blogs.filter((b) => b.id !== blog.id));
+      dispatch(removeBlog(blog));
     }
   };
 
