@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import Blog from "./components/Blog";
 import { useDispatch, useSelector } from "react-redux";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import storageService from "./services/storage";
+import userService from "./services/user.js";
 import {
   createInfo,
   createError,
@@ -16,27 +16,26 @@ import {
   removeBlog,
 } from "./reducers/blogReducer.js";
 import { setUser } from "./reducers/userReducer.js";
-
+import { setUsers } from "./reducers/usersReducer.js";
+import { Routes, Route, Link } from "react-router-dom";
 import LoginForm from "./components/Login";
-import NewBlog from "./components/NewBlog";
 import Notification from "./components/Notification";
-import Togglable from "./components/Togglable";
+import Users from "./components/Users.js";
+import Blogs from "./components/Blogs.js";
 
 const App = () => {
   const info = useSelector((store) => store.messages);
   const blogs = useSelector((store) => store.blogs);
   const user = useSelector((store) => store.user);
+  const users = useSelector((store) => store.users);
 
   const dispatch = useDispatch();
   const blogFormRef = useRef();
 
   useEffect(() => {
-    const user = storageService.loadUser();
-    dispatch(setUser(user));
-  }, []);
-
-  useEffect(() => {
+    dispatch(setUser(storageService.loadUser()));
     blogService.getAll().then((blogs) => dispatch(setBlogs(blogs)));
+    userService.getAll().then((users) => dispatch(setUsers(users)));
   }, []);
 
   const login = async (username, password) => {
@@ -119,30 +118,33 @@ const App = () => {
     );
   }
 
-  const byLikes = (b1, b2) => b2.likes - b1.likes;
-
   return (
     <div>
-      <h2>blogs</h2>
-      <Notification info={info} />
+      <nav style={{ display: "flex", gap: "10px" }}>
+        <Link to={"/"}>home</Link>
+        <Link to={"/users"}>users</Link>
+      </nav>
       <div>
         {user.name} logged in
         <button onClick={logout}>logout</button>
       </div>
-      <Togglable buttonLabel="new note" ref={blogFormRef}>
-        <NewBlog createBlog={createBlog} />
-      </Togglable>
-      <div>
-        {blogs.sort(byLikes).map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            like={() => like(blog)}
-            canRemove={user && blog.user.username === user.username}
-            remove={() => remove(blog)}
-          />
-        ))}
-      </div>
+      <Notification info={info} />
+      <Routes>
+        <Route path="/users" element={<Users users={users} />} />
+        <Route
+          path="/"
+          element={
+            <Blogs
+              blogs={blogs}
+              user={user}
+              blogFormRef={blogFormRef}
+              createBlog={createBlog}
+              like={like}
+              remove={remove}
+            />
+          }
+        />
+      </Routes>
     </div>
   );
 };
