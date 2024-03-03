@@ -21,6 +21,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import LoginForm from "./components/Login";
 import Notification from "./components/Notification";
 import Users from "./components/Users.js";
+import User from "./components/User.js";
 import Blogs from "./components/Blogs.js";
 
 const App = () => {
@@ -130,6 +131,7 @@ const App = () => {
       </div>
       <Notification info={info} />
       <Routes>
+        <Route path="/users/:id" element={<User users={users} />} />
         <Route path="/users" element={<Users users={users} />} />
         <Route
           path="/"
