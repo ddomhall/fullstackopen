@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import blogService from "../services/blogs";
 import { createInfo, removeMessage } from "../reducers/messageReducer.js";
-import { likeBlog, removeBlog } from "../reducers/blogReducer.js";
+import { setBlogs, likeBlog, removeBlog } from "../reducers/blogReducer.js";
 
 export default function BlogView({ blogs, user }) {
   const dispatch = useDispatch();
@@ -44,6 +44,21 @@ export default function BlogView({ blogs, user }) {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const comment = { content: e.target.elements.content.value };
+    const updatedBlog = await blogService.addComment(id, comment);
+
+    dispatch(setBlogs(blogs.map((b) => (b.id === id ? updatedBlog : b))));
+    dispatch(createInfo(`Comment ${comment.content} added`));
+    setTimeout(() => {
+      dispatch(removeMessage());
+    }, 3000);
+
+    e.target.reset();
+  };
+
   if (!blog) return null;
 
   return (
@@ -54,6 +69,10 @@ export default function BlogView({ blogs, user }) {
       <div>
         created by <Link to={"/users/" + blog.user.id}>{blog.author}</Link>
       </div>
+      <form onSubmit={handleSubmit}>
+        <input name="content" placeholder="comment" />
+        <input type="submit" />
+      </form>
       {blog.comments.length > 0 && (
         <>
           <h3>comments</h3>
