@@ -1,24 +1,11 @@
 import { useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import Blog from "./Blog";
 import NewBlog from "./NewBlog";
 import Togglable from "./Togglable";
 import blogService from "../services/blogs";
-import loginService from "../services/login";
-import storageService from "../services/storage";
-import userService from "../services/user.js";
-import {
-  createInfo,
-  createError,
-  removeMessage,
-} from "../reducers/messageReducer.js";
-import {
-  setBlogs,
-  appendBlog,
-  likeBlog,
-  removeBlog,
-} from "../reducers/blogReducer.js";
+import { createInfo, removeMessage } from "../reducers/messageReducer.js";
+import { appendBlog } from "../reducers/blogReducer.js";
 
 export default function Blogs({ blogs, user }) {
   const dispatch = useDispatch();

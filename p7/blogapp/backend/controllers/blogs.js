@@ -15,7 +15,8 @@ router.post('/', userExtractor, async (request, response) => {
   const { title, author, url, likes } = request.body
   const blog = new Blog({
     title, author, url, 
-    likes: likes ? likes : 0
+    likes: 0,
+    comments: []
   })
 
   const user = request.user
@@ -37,9 +38,9 @@ router.post('/', userExtractor, async (request, response) => {
 })
 
 router.put('/:id', async (request, response) => {
-  const { title, url, author, likes } = request.body
+  const { title, url, author, likes, comments } = request.body
 
-  let updatedBlog = await Blog.findByIdAndUpdate(request.params.id,  { title, url, author, likes }, { new: true })
+  let updatedBlog = await Blog.findByIdAndUpdate(request.params.id,  { title, url, author, likes, comments }, { new: true })
 
   updatedBlog = await Blog.findById(updatedBlog._id).populate('user') 
 
@@ -61,6 +62,17 @@ router.delete('/:id', userExtractor, async (request, response) => {
   await blog.remove()
   
   response.status(204).end()
+})
+
+router.post('/:id/comments', async (request, response) => {
+  const blog = await Blog.findById(request.params.id)
+  const newComments = blog.comments.concat(request.body)
+
+  let updatedBlog = await Blog.findByIdAndUpdate(request.params.id,  {comments: newComments})
+  updatedBlog = await Blog.findById(updatedBlog._id).populate('user') 
+  console.log(updatedBlog)
+
+  response.json(updatedBlog)
 })
 
 module.exports = router

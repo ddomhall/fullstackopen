@@ -1,28 +1,15 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import blogService from "../services/blogs";
-import loginService from "../services/login";
-import storageService from "../services/storage";
-import userService from "../services/user.js";
-import {
-  createInfo,
-  createError,
-  removeMessage,
-} from "../reducers/messageReducer.js";
-import {
-  setBlogs,
-  appendBlog,
-  likeBlog,
-  removeBlog,
-} from "../reducers/blogReducer.js";
+import { createInfo, removeMessage } from "../reducers/messageReducer.js";
+import { likeBlog, removeBlog } from "../reducers/blogReducer.js";
 
 export default function BlogView({ blogs, user }) {
   const dispatch = useDispatch();
   const id = useParams().id;
   const navigate = useNavigate();
-  const blog = blogs.find((b) => b.id == id);
+  const blog = blogs.find((b) => b.id === id);
 
   const like = async (blog) => {
     const blogToUpdate = {
@@ -67,6 +54,16 @@ export default function BlogView({ blogs, user }) {
       <div>
         created by <Link to={"/users/" + blog.user.id}>{blog.author}</Link>
       </div>
+      {blog.comments.length > 0 && (
+        <>
+          <h3>comments</h3>
+          <ul>
+            {blog.comments.map((c) => (
+              <li key={c._id}>{c.content}</li>
+            ))}
+          </ul>
+        </>
+      )}
       <button onClick={() => like(blog)}>like</button>
       {user.username === blog.user.username && (
         <button onClick={() => remove(blog)}>remove</button>
