@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
@@ -21,9 +21,8 @@ import {
 export default function BlogView({ blogs, user }) {
   const dispatch = useDispatch();
   const id = useParams().id;
+  const navigate = useNavigate();
   const blog = blogs.find((b) => b.id == id);
-  console.log(user);
-  console.log(blog);
 
   const like = async (blog) => {
     const blogToUpdate = {
@@ -47,6 +46,7 @@ export default function BlogView({ blogs, user }) {
     );
     if (ok) {
       await blogService.remove(blog.id);
+      navigate("/");
       dispatch(
         createInfo(`The blog' ${blog.title}' by '${blog.author} removed`),
       );

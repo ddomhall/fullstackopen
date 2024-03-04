@@ -27,9 +27,7 @@ export default function Blogs({ blogs, user }) {
   const byLikes = (b1, b2) => b2.likes - b1.likes;
 
   const createBlog = async (newBlog) => {
-    console.log(newBlog);
     const createdBlog = await blogService.create(newBlog);
-    console.log(createdBlog);
     dispatch(
       createInfo(`A new blog '${newBlog.title}' by '${newBlog.author}' added`),
     );

@@ -43,6 +43,7 @@ const LoginForm = () => {
             value={username}
             onChange={({ target }) => setUsername(target.value)}
             id="username"
+            autoFocus
           />
         </div>
         <div>
