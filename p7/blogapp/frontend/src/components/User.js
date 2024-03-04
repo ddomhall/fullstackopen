@@ -1,10 +1,9 @@
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function User({ users }) {
   const id = useParams().id;
   const user = users.find((u) => u.id == id);
-
-  console.log(user);
 
   if (!user) {
     return null;
@@ -16,7 +15,9 @@ export default function User({ users }) {
       <h3>added blogs</h3>
       <ul>
         {user.blogs.map((b) => (
-          <li key={b.id}>{b.title}</li>
+          <li key={b.id}>
+            <Link to={"/blogs/" + b.id}>{b.title}</Link>
+          </li>
         ))}
       </ul>
     </>

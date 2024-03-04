@@ -40,38 +40,6 @@ export default function Blogs({ blogs, user }) {
     blogFormRef.current.toggleVisibility();
   };
 
-  const like = async (blog) => {
-    const blogToUpdate = {
-      ...blog,
-      likes: blog.likes + 1,
-      user: blog.user.id,
-    };
-    const updatedBlog = await blogService.update(blogToUpdate);
-    dispatch(
-      createInfo(`A like for the blog '${blog.title}' by '${blog.author}'`),
-    );
-    setTimeout(() => {
-      dispatch(removeMessage());
-    }, 3000);
-    dispatch(likeBlog(updatedBlog));
-  };
-
-  const remove = async (blog) => {
-    const ok = window.confirm(
-      `Sure you want to remove '${blog.title}' by ${blog.author}`,
-    );
-    if (ok) {
-      await blogService.remove(blog.id);
-      dispatch(
-        createInfo(`The blog' ${blog.title}' by '${blog.author} removed`),
-      );
-      setTimeout(() => {
-        dispatch(removeMessage());
-      }, 3000);
-      dispatch(removeBlog(blog));
-    }
-  };
-
   return (
     <>
       <h2>blogs</h2>
@@ -80,13 +48,7 @@ export default function Blogs({ blogs, user }) {
       </Togglable>
       <div>
         {[...blogs].sort(byLikes).map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            like={() => like(blog)}
-            canRemove={user && blog.user.username === user.username}
-            remove={() => remove(blog)}
-          />
+          <Blog key={blog.id} blog={blog} />
         ))}
       </div>
     </>

@@ -13,6 +13,7 @@ import Notification from "./components/Notification";
 import Users from "./components/Users.js";
 import User from "./components/User.js";
 import Blogs from "./components/Blogs.js";
+import BlogView from "./components/BlogView.js";
 
 const App = () => {
   const info = useSelector((store) => store.messages);
@@ -53,6 +54,10 @@ const App = () => {
             <button onClick={logout}>logout</button>
           </div>
           <Routes>
+            <Route
+              path="/blogs/:id"
+              element={<BlogView blogs={blogs} user={user} />}
+            />
             <Route path="/users/:id" element={<User users={users} />} />
             <Route path="/users" element={<Users users={users} />} />
             <Route path="/" element={<Blogs blogs={blogs} user={user} />} />
