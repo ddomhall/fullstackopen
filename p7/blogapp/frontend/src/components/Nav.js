@@ -17,24 +17,20 @@ export default function Nav({ user }) {
   };
 
   return (
-    <nav
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          gap: "10px",
-        }}
-      >
-        <Link to={"/"}>home</Link>
-        <Link to={"/users"}>users</Link>
+    <nav className="flex justify-between h-10 leading-10 border-b">
+      <div>
+        <Link to={"/"} className="border-r px-2">
+          home
+        </Link>
+        <Link to={"/users"} className="border-r px-2">
+          users
+        </Link>
       </div>
       <div>
-        {user.name} logged in
-        <button onClick={logout}>logout</button>
+        <span className="border-r px-2">{user.name} logged in</span>
+        <button onClick={logout} className="px-2">
+          logout
+        </button>
       </div>
     </nav>
   );

@@ -8,6 +8,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import blogReducer from "./reducers/blogReducer.js";
 import userReducer from "./reducers/userReducer.js";
 import usersReducer from "./reducers/usersReducer.js";
+import "./index.css";
 
 const store = configureStore({
   reducer: {

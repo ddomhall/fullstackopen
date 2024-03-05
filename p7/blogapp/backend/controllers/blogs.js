@@ -70,7 +70,6 @@ router.post('/:id/comments', async (request, response) => {
 
   let updatedBlog = await Blog.findByIdAndUpdate(request.params.id,  {comments: newComments})
   updatedBlog = await Blog.findById(updatedBlog._id).populate('user') 
-  console.log(updatedBlog)
 
   response.json(updatedBlog)
 })
