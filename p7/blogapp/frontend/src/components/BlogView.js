@@ -85,9 +85,13 @@ export default function BlogView({ blogs, user }) {
           </ul>
         </>
       )}
-      <button onClick={() => like(blog)}>like</button>
+      <button onClick={() => like(blog)} className="mr-1">
+        like
+      </button>
       {user.username === blog.user.username && (
-        <button onClick={() => remove(blog)}>remove</button>
+        <button onClick={() => remove(blog)} className="ml-1">
+          remove
+        </button>
       )}
     </>
   );

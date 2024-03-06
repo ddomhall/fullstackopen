@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function User({ users }) {
   const id = useParams().id;
-  const user = users.find((u) => u.id == id);
+  const user = users.find((u) => u.id === id);
 
   if (!user) {
     return null;
@@ -16,7 +16,9 @@ export default function User({ users }) {
       <ul>
         {user.blogs.map((b) => (
           <li key={b.id}>
-            <Link to={"/blogs/" + b.id}>{b.title}</Link>
+            <Link to={"/blogs/" + b.id} className="underline">
+              {b.title}
+            </Link>
           </li>
         ))}
       </ul>
