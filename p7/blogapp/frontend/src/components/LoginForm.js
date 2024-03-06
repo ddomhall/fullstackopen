@@ -38,26 +38,24 @@ const LoginForm = () => {
       <h2>Log in to application</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          username
           <input
             value={username}
             onChange={({ target }) => setUsername(target.value)}
             id="username"
+            placeholder="username"
             autoFocus
           />
         </div>
         <div>
-          password
           <input
             type="password"
             value={password}
             onChange={({ target }) => setPassword(target.value)}
+            placeholder="password"
             id="password"
           />
         </div>
-        <button id="login-button" type="submit">
-          login
-        </button>
+        <input type="submit" value="login" />
       </form>
     </div>
   );

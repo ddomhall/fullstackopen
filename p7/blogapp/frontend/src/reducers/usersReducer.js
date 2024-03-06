@@ -7,6 +7,9 @@ const usersSlice = createSlice({
     setUsers(state, action) {
       return action.payload;
     },
+    updateUsers(state, action) {
+      return state;
+    },
   },
 });
 

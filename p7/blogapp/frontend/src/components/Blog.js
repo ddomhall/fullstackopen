@@ -5,16 +5,9 @@ import { Link } from "react-router-dom";
 const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false);
 
-  const style = {
-    marginBottom: 2,
-    padding: 5,
-    borderStyle: "solid",
-    borderRadius: 5,
-  };
-
   return (
-    <div style={style} className="blog">
-      <Link to={"/blogs/" + blog.id}>
+    <div>
+      <Link to={"/blogs/" + blog.id} className="underline">
         {blog.title} {blog.author}
       </Link>
     </div>

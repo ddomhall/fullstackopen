@@ -7,3 +7,7 @@
   font-family: roboto;
   //box-shadow: 0 0 0 1px white;
 }
+
+input {
+  @apply rounded-xl ml-2 px-2
+}

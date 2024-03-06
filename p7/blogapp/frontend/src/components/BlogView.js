@@ -64,7 +64,9 @@ export default function BlogView({ blogs, user }) {
   return (
     <>
       <h2>{blog.title}</h2>
-      <div>{blog.url}</div>
+      <a href={blog.url} className="underline">
+        {blog.url}
+      </a>
       <div>{blog.likes} like(s)</div>
       <div>
         created by <Link to={"/users/" + blog.user.id}>{blog.author}</Link>

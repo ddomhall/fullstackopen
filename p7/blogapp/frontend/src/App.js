@@ -30,7 +30,7 @@ const App = () => {
   }, []);
 
   return (
-    <>
+    <div className="w-96 m-auto text-center">
       <Notification info={info} />
       {!user ? (
         <LoginForm />
@@ -48,7 +48,7 @@ const App = () => {
           </Routes>
         </>
       )}
-    </>
+    </div>
   );
 };
 
