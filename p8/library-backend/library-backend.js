@@ -81,36 +81,40 @@ let books = [
 ]
 
 const typeDefs = `
-  type Author {
-    name: String!
-    id: String!
-    born: Int
-    bookCount: Int!
-  }
+type Author {
+  name: String!
+  id: String!
+  born: Int
+  bookCount: Int!
+}
 
-  type Book {
+type Book {
+  title: String!
+  published: Int!
+  author: String!
+  id: String!
+  genres: [String!]!
+}
+
+type Query {
+  bookCount: Int!
+  authorCount: Int!
+  allBooks(author: String, genre: String): [Book!]!
+  allAuthors: [Author!]!
+}
+
+type Mutation {
+  addBook(
     title: String!
-    published: Int!
     author: String!
-    id: String!
+    published: Int!
     genres: [String!]!
-  }
-
-  type Query {
-    bookCount: Int!
-    authorCount: Int!
-    allBooks(author: String, genre: String): [Book!]!
-    allAuthors: [Author!]!
-  }
-
-  type Mutation {
-    addBook(
-      title: String!
-      author: String!
-      published: Int!
-      genres: [String!]!
-    ): Book
-  }
+  ): Book
+  editAuthor(
+    name: String!
+    setBornTo: Int!
+  ): Author
+}
 `
 
 const resolvers = {
@@ -150,6 +154,15 @@ const resolvers = {
         authors = authors.concat({name: args.author, id: uuid()})
       }
       return book
+    },
+    editAuthor: (root, args) => {
+      const author = authors.find(a => a.name === args.name)
+      if (!author) {
+        return null
+      }
+      const updatedAuthor = {...author, born: args.setBornTo}
+      authors = authors.map(a => a.name == updatedAuthor.name ? updatedAuthor : a)
+      return updatedAuthor
     }
   }
 }
@@ -162,5 +175,5 @@ const server = new ApolloServer({
 startStandaloneServer(server, {
   listen: { port: 4000 },
 }).then(({ url }) => {
-  console.log(`Server ready at ${url}`)
-})
+    console.log(`Server ready at ${url}`)
+  })
