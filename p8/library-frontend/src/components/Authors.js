@@ -42,7 +42,11 @@ const Authors = (props) => {
       </table>
       <h3>set birth year</h3>
       <form onSubmit={handleSubmit}>
-        <input name='name' placeholder='name' />
+        <select name='name'>
+          {result.data.allAuthors.map((a) => (
+          <option key={a.name} value={a.name}>{a.name}</option>
+          ))}
+        </select>
         <input name='born' placeholder='born' type='number'/>
         <input type='submit' />
       </form>
