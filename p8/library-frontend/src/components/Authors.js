@@ -14,7 +14,6 @@ const Authors = (props) => {
 
   return (
     <div>
-      <button onClick={() => console.log(result)}>test</button>
       <h2>authors</h2>
       <table>
         <tbody>
