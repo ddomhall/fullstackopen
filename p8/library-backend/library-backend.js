@@ -83,11 +83,33 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args) => {
-      let author = await Author.findOne({name: args.author})
-      if (!author) author = await new Author({name: args.author}).save()
-      return await new Book({ title: args.title, author: author._id, published: args.published, genres: args.genres }).save()
+      try {
+        let author = await Author.findOne({name: args.author})
+        if (!author) author = await new Author({name: args.author}).save()
+        return await new Book({ title: args.title, author: author._id, published: args.published, genres: args.genres }).save()
+      } catch (error) {
+        throw new GraphQLError('Adding book failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: {...args},
+            error
+          }
+        })  
+      }
     },
-    editAuthor: async (root, args) => await Author.findByIdAndUpdate(args.author, {born: args.born}, {new: true})
+    editAuthor: async (root, args) => {
+      try {
+        await Author.findByIdAndUpdate(args.author, {born: args.born}, {new: true})
+      } catch (error) {
+        throw new GraphQLError('Editing author failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: {...args},
+            error
+          }
+        })    
+      }
+    }
   }
 }
 
