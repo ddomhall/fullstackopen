@@ -21,11 +21,12 @@ const NewBook = (props) => {
 
     createBook({variables: {title, author, published, genres}})
 
-    //setTitle('')
-    //setPublished('')
-    //setAuthor('')
-    //setGenre('')
-    //setGenres([])
+    setTitle('')
+    setPublished('')
+    setAuthor('')
+    setGenre('')
+    setGenres([])
+    props.setPage('books')
   }
 
   const addGenre = () => {

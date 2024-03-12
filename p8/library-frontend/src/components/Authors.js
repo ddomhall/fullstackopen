@@ -9,7 +9,7 @@ const Authors = (props) => {
 
   function handleSubmit(e) {
     e.preventDefault()
-    editAuthor({variables: {name: e.target.name.value, setBornTo: parseInt(e.target.born.value)}})
+    editAuthor({variables: {name: result.data.allAuthors.find(a => a.name == e.target.name.value).name, born: parseInt(e.target.born.value)}})
     e.target.reset()
   }
 

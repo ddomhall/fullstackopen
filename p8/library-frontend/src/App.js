@@ -20,6 +20,10 @@ const App = () => {
   })
 
   useEffect(() => {
+    setToken(localStorage.getItem('library-user-token'))
+  }, [])
+
+  useEffect(() => {
     if ( result.data ) {
       const token = result.data.login.value
       setToken(token)
@@ -75,7 +79,7 @@ const App = () => {
 
       <Books show={page === 'books'} />
 
-      <NewBook show={page === 'add'} />
+      <NewBook show={page === 'add'} setPage={setPage} />
     </div>
   )
 }
