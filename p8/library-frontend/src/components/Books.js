@@ -9,7 +9,6 @@ const Books = (props) => {
     return null
   }
   
-
   if (result.loading) {
     return <div>loading...</div>
   }

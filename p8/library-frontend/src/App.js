@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
+import Recommended from './components/Recommended'
 import { useMutation, useApolloClient } from '@apollo/client'
 import {LOGIN} from './queries.js'
 
@@ -68,18 +69,15 @@ const App = () => {
 
   return (
     <div>
-      <div>
-        <button onClick={logout}>logout</button>
-        <button onClick={() => setPage('authors')}>authors</button>
-        <button onClick={() => setPage('books')}>books</button>
-        <button onClick={() => setPage('add')}>add book</button>
-      </div>
-
+      <button onClick={logout}>logout</button>
+      <button onClick={() => setPage('authors')}>authors</button>
+      <button onClick={() => setPage('books')}>books</button>
+      <button onClick={() => setPage('add')}>add book</button>
+      <button onClick={() => setPage('recommended')}>recommended</button>
       <Authors show={page === 'authors'} />
-
       <Books show={page === 'books'} />
-
       <NewBook show={page === 'add'} setPage={setPage} />
+      <Recommended show={page === 'recommended'} />
     </div>
   )
 }
