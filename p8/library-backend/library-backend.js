@@ -64,7 +64,7 @@ type Mutation {
     genres: [String!]!
   ): Book
   editAuthor(
-    name: String!
+    author: String!
     born: Int!
   ): Author
   createUser(
@@ -152,8 +152,7 @@ const resolvers = {
             }
           })
         }
-        const author = await Author.findOne({name: args.name})
-        return await Author.findByIdAndUpdate(author._id, {born: args.born}, {new: true})
+        return await Author.findByIdAndUpdate(args.author, {born: args.born}, {new: true})
       } catch (error) {
         throw new GraphQLError('Editing author failed', {
           extensions: {

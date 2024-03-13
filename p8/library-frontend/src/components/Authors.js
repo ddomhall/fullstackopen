@@ -9,7 +9,7 @@ const Authors = (props) => {
 
   function handleSubmit(e) {
     e.preventDefault()
-    editAuthor({variables: {name: result.data.allAuthors.find(a => a.name == e.target.name.value).name, born: parseInt(e.target.born.value)}})
+    editAuthor({variables: {author: e.target.author.value, born: parseInt(e.target.born.value)}})
     e.target.reset()
   }
 
@@ -42,9 +42,9 @@ const Authors = (props) => {
       </table>
       <h3>set birth year</h3>
       <form onSubmit={handleSubmit}>
-        <select name='name'>
+        <select name='author'>
           {result.data.allAuthors.map((a) => (
-          <option key={a.name} value={a.name}>{a.name}</option>
+          <option key={a.id} value={a.id}>{a.name}</option>
           ))}
         </select>
         <input name='born' placeholder='born' type='number'/>
