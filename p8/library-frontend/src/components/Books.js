@@ -11,23 +11,23 @@ const Books = (props) => {
   if (!props.show) {
     return null
   }
-  
+
   if (result.loading) {
     return <div>loading...</div>
   }
 
   let books = result.data.allBooks
-  console.log(books)
   const filters = [...new Set(books.flatMap(b => b.genres))]
 
   return (
     <div>
       <h2>books</h2>
-      <button onClick={() => setFilter()}>clear</button>
-      {!filter && filters.map(f => <button key={f} onClick={() => {
-      setFilter(f)
-      result.refetch()
-      }}>{f}</button>)}
+      {filter ? 
+        <button onClick={() => setFilter()}>clear</button>
+        : filters.map(f => <button key={f} onClick={() => {
+          setFilter(f)
+          result.refetch()
+        }}>{f}</button>)}
       <table>
         <tbody>
           <tr>
