@@ -17,6 +17,7 @@ const Books = (props) => {
   }
 
   let books = result.data.allBooks
+  console.log(books)
   const filters = [...new Set(books.flatMap(b => b.genres))]
 
   return (

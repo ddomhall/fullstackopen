@@ -1,52 +1,69 @@
 import { gql } from '@apollo/client'
 
+const USER_DETAILS = gql`
+fragment UserDetails on User {
+  id
+  username
+  favoriteGenre
+}
+`
+
+const AUTHOR_DETAILS = gql`
+fragment AuthorDetails on Author {
+  id
+  name
+  born
+  bookCount
+}`
+
+const BOOK_DETAILS = gql`
+fragment BookDetails on Book {
+  author {
+    ...AuthorDetails
+  }
+  title
+  published
+  genres
+  id
+}
+${AUTHOR_DETAILS}`
+
 export const ALL_AUTHORS = gql`
 query {
   allAuthors {
-    name
-    born
-    bookCount
-    id
+    ...AuthorDetails
   }
-}`
+}
+${AUTHOR_DETAILS}`
 
 export const ALL_BOOKS = gql`
 query AllBooks($author: String, $genre: String){
   allBooks(author: $author, genre: $genre) {
-    author {
-      name
-    }
-    title
-    published
-    genres
-    id
+    ...BookDetails
   }
-}`
+}
+${BOOK_DETAILS}
+`
 
 export const ME = gql`
 query Me {
   me {
-    favoriteGenre
-    id
-    username
+    ...UserDetails
   }
-}`
+}
+${USER_DETAILS}`
 
 export const FAVORITE_BOOKS = gql`
 query FavoriteBooks {
   me {
-    favoriteGenre
+    ...UserDetails
   }
   allBooks {
-    title
-    genres
-    published
-    id
-    author {
-      name
-    }
+    ...BookDetails
   }
-}`
+}
+${BOOK_DETAILS}
+${USER_DETAILS}`
 
 export const CREATE_BOOK = gql`
 mutation createBook($title: String!, $author: String!, $published: Int!, $genres: [String!]!) {
@@ -56,14 +73,10 @@ mutation createBook($title: String!, $author: String!, $published: Int!, $genres
     published: $published,
     genres: $genres
   ) {
-    title
-    author {
-      name
-    }
-    published
-    genres
+    ...BookDetails
   }
-}`
+}
+${BOOK_DETAILS}`
 
 export const EDIT_AUTHOR = gql`
 mutation editAuthor($author: String!, $born: Int!) {
@@ -71,10 +84,10 @@ mutation editAuthor($author: String!, $born: Int!) {
     author: $author,
     born: $born
   ) {
-    name
-    born
+    ...AuthorDetails
   }
-}`
+}
+${AUTHOR_DETAILS}`
 
 export const LOGIN = gql`
 mutation login($username: String!, $password: String!) {
@@ -82,3 +95,12 @@ mutation login($username: String!, $password: String!) {
     value
   }
 }`
+
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      ...BookDetails
+    }
+  }
+  ${BOOK_DETAILS}
+`
