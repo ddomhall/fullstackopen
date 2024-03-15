@@ -1,13 +1,5 @@
 import { gql } from '@apollo/client'
 
-const USER_DETAILS = gql`
-fragment UserDetails on User {
-  id
-  username
-  favoriteGenre
-}
-`
-
 const AUTHOR_DETAILS = gql`
 fragment AuthorDetails on Author {
   id
@@ -48,22 +40,24 @@ ${BOOK_DETAILS}
 export const ME = gql`
 query Me {
   me {
-    ...UserDetails
+    id
+    username
+    favoriteGenre
   }
-}
-${USER_DETAILS}`
+}`
 
 export const FAVORITE_BOOKS = gql`
 query FavoriteBooks {
   me {
-    ...UserDetails
+    id
+    username
+    favoriteGenre
   }
   allBooks {
     ...BookDetails
   }
 }
-${BOOK_DETAILS}
-${USER_DETAILS}`
+${BOOK_DETAILS}`
 
 export const CREATE_BOOK = gql`
 mutation createBook($title: String!, $author: String!, $published: Int!, $genres: [String!]!) {

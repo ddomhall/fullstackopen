@@ -11,10 +11,15 @@ const resolvers = {
     bookCount: async () => Book.countDocuments(),
     authorCount: async () => Author.countDocuments(),
     allBooks: async (root, args) => {
-      if (args.author && args.genre) return await Book.find({author: args.author, genres: args.genre})
-      else if (args.author) return await Book.find({author: args.author})
-      else if (args.genre) return await Book.find({genres: args.genre})
-      else return await Book.find()
+      if (args.author && args.genre) {
+      return await Book.find({author: args.author, genres: args.genre}).populate('author')
+      } else if (args.author) {
+        return await Book.find({author: args.author}).populate('author')
+      } else if (args.genre) {
+      return await Book.find({genres: args.genre}).populate('author')
+      } else {
+      return await Book.find().populate('author')
+      }
     },
     allAuthors: async () => await Author.find(),
     me: (root, args, context) => {
@@ -34,7 +39,7 @@ const resolvers = {
     name: (root) => root.name,
     id: (root) => root.id,
     born: (root) => root.born,
-    bookCount: async (root) => await Book.find({author: root.id}).countDocuments(),
+    bookCount: (root) => root.bookCount,
   },
 
   User: {
@@ -59,9 +64,12 @@ const resolvers = {
           })
         }
         let author = await Author.findOne({name: args.author})
-        if (!author) author = await new Author({name: args.author}).save()
+        if (!author) author = await new Author({name: args.author, bookCount: 0}).save()
+
         book = new Book({ title: args.title, author: author._id, published: args.published, genres: args.genres })
         await book.save()
+        author.bookCount += 1
+        await author.save()
       } catch (error) {
         throw new GraphQLError('Adding book failed', {
           extensions: {

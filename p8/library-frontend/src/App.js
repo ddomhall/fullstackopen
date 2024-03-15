@@ -35,6 +35,9 @@ const App = () => {
   const [ login, result ] = useMutation(LOGIN, {
     onError: (error) => {
       setError(error.graphQLErrors[0].message)
+      setTimeout(() => {
+        setError()
+      }, 3000);
     }
   })
 
@@ -71,6 +74,7 @@ const App = () => {
   if (!token) {
     return (
       <div>
+        <p style={{height: '10px'}}>{error}</p>
         <form onSubmit={submit}>
           <div>
             username <input
@@ -93,6 +97,7 @@ const App = () => {
 
   return (
     <div>
+      <p style={{height: '10px'}}>{error}</p>
       <button onClick={logout}>logout</button>
       <button onClick={() => setPage('authors')}>authors</button>
       <button onClick={() => setPage('books')}>books</button>
