@@ -11,3 +11,4 @@ For CI alternatives to Jenkins/GitHub Actions, you could use JetBrains TeamCity,
 ### Would this setup be better in a self-hosted or a cloud-based environment? Why? What information would you need to make that decision?
 Since this is a personal project, a cloud based solution is best as you can avoid the hassle of setting up a server.
 You also get all the most common features out the box, again without having to set them up yourself, you will probably need to configure them though.
+
